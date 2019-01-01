@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.litchiny.customviews.FlowActivity">
+
+    <com.litchiny.customviews.view.FlowLayout
+        android:id="@+id/fl_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:flow_text_normal_color="@color/colorPrimaryDark"
+        android:layout_margin="@dimen/dimen_size_15"
+        />
+</android.support.constraint.ConstraintLayout>
