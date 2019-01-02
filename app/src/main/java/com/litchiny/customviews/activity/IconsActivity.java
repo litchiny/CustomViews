@@ -5,7 +5,11 @@ import android.os.Bundle;
 
 import com.litchiny.customviews.R;
 import com.litchiny.customviews.view.BatteryView;
-
+/**
+ * IconView的集合
+ *
+ * @author Litchiny
+ */
 public class IconsActivity extends AppCompatActivity {
 
     @Override
