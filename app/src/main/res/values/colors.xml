@@ -2,5 +2,24 @@
 <resources>
     <color name="colorPrimary">#53ae37</color>
     <color name="colorPrimaryDark">#178403</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#97ea96</color>
+
+
+    <color name="colorCircleRingS">#dbebce</color>
+    <color name="colorCircleRingE">#bbecab</color>
+    <color name="colorCircleRingType1">#34d134</color>
+    <color name="colorCircleRingType2">#2fb117</color>
+    <color name="colorCircleRingType3">#297c25</color>
+    <color name="colorCircleRingType4">#264d23</color>
+
+    <color name="colorSleepGradient">#106402</color>
+    <color name="colorSleepGradient2">#03930c</color>
+    <color name="colorSleepGradient3">#1fc41c</color>
+    <color name="colorSleepGradient4">#6de727</color>
+    <color name="colorRecyclerItemDividerBg">#c9c9c9</color>
+    <color name="colorTextCustomDeep">#b3b3b3</color>
+    <color name="colorHeartRateMax">#8e0000</color>
+    <color name="colorHeartRateMin">#ff0004</color>
+    <color name="colorTextSelect">#106402</color>
+
 </resources>

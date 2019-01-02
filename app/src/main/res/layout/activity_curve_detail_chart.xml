@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_size_50"
+        android:layout_marginTop="@dimen/dimen_size_50"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dimen_size_10"
+        android:paddingEnd="@dimen/dimen_size_30"
+        android:paddingStart="@dimen/dimen_size_30"
+        android:paddingTop="@dimen/dimen_size_10"
+        android:text="DAY"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dimen_size_15" />
+
+    <com.litchiny.customviews.view.CurveDetailChart
+        android:id="@+id/cdc_show"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FlowActivity"></activity>
+        <activity android:name=".activity.FlowLayoutActivity" />
+        <activity android:name=".activity.CircleRingActivity" />
+        <activity android:name=".activity.CurveDetailChartActivity" />
+        <activity android:name=".activity.IconsActivity"></activity>
     </application>
 
 </manifest>

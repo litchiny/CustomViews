@@ -19,14 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Litchiny on 2018/12/23.
+ * 一个流式布局view
+ *
+ * @author Litchiny
  */
-
 public class FlowLayout extends View {
     private static final String TAG = "FlowLayout";
     private Paint mPaint;
     private List<String> textList = new ArrayList<>();
-    private int minPadding = 80;
+    private int minPadding = 100;
     private int textPadding = 20;
     private float textSize = 30;
     private int textPace = 35;                                //两个item的间隔
@@ -60,6 +61,17 @@ public class FlowLayout extends View {
         initPaint();
     }
 
+    private void initPaint() {
+        mPaint = new Paint();
+        mPaint.setTextSize(textSize);
+        Rect rect = new Rect();
+        mPaint.getTextBounds("1", 0, "1".length(), rect);
+        textHeight = rect.height();
+        textPadding = textHeight;
+        textPace = textHeight * 3 / 2;
+        mPaint.setAntiAlias(true);
+    }
+
     public boolean isLongClick() {
         return isLongClick;
     }
@@ -76,15 +88,73 @@ public class FlowLayout extends View {
         postInvalidate();
     }
 
-    private void initPaint() {
-        mPaint = new Paint();
-        mPaint.setTextSize(textSize);
-        Rect rect = new Rect();
-        mPaint.getTextBounds("1", 0, "1".length(), rect);
-        textHeight = rect.height();
-        textPadding = textHeight;
-        textPace = textHeight * 3 / 2;
-        mPaint.setAntiAlias(true);
+    /**
+     * @param addStr
+     * @param isAddEnd 新增加的字符串是否显示在末尾
+     */
+    public void addData(String addStr, boolean isAddEnd) {
+        if (isAddEnd){
+            clickIndex = this.textList.size();
+            this.textList.add(addStr);
+        } else {
+            int lastListSize = textList.size() - 1;
+            clickIndex = lastListSize;
+            String endStr = textList.get(lastListSize);
+            textList.set(lastListSize,addStr);
+            textList.add(endStr);
+        }
+        postInvalidate();
+    }
+
+    public void clearDeleteType() {
+        clickIndex = -1;
+        isLongClick = false;
+        postInvalidate();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                if (paddingHasChanged) {
+                    postInvalidate();
+                    paddingHasChanged = false;
+                }
+                if (System.currentTimeMillis() - touchDownTime > 500) {
+                    if (null != listener) {
+                        clickIndex = -1;
+                        isLongClick = !isLongClick;
+                        postInvalidate();
+                    }
+                } else {
+                    int i = 0;
+                    float x = event.getX();
+                    float y = event.getY();
+                    for (int[] arr : pointList) {
+                        if (x >= arr[0] && x <= arr[2] && y >= arr[1] && y <= arr[3]) {
+                            clickIndex = i;
+                            break;
+                        }
+                        i++;
+                    }
+
+                    if (null != listener && clickIndex >= 0) {
+                        if (isLongClick)
+                            listener.setOnClickLongItemListener(clickIndex);
+                        else
+                            listener.setOnClickItemListener(clickIndex);
+                        postInvalidate();
+                    }
+                }
+                break;
+
+            case MotionEvent.ACTION_DOWN:
+                downY = event.getY();
+                paddingHasChanged = false;
+                touchDownTime = System.currentTimeMillis();
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -136,12 +206,6 @@ public class FlowLayout extends View {
         }
     }
 
-    public void clearDeleteType() {
-        clickIndex = -1;
-        isLongClick = false;
-        postInvalidate();
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -175,52 +239,6 @@ public class FlowLayout extends View {
                 result = defaultSize;
         }
         return result;
-    }
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:
-                if (paddingHasChanged) {
-                    postInvalidate();
-                    paddingHasChanged = false;
-                }
-                if (System.currentTimeMillis() - touchDownTime > 500) {
-                    if (null != listener) {
-                        clickIndex = -1;
-                        isLongClick = !isLongClick;
-                        postInvalidate();
-                    }
-                } else {
-                    int i = 0;
-                    float x = event.getX();
-                    float y = event.getY();
-                    for (int[] arr : pointList) {
-                        if (x >= arr[0] && x <= arr[2] && y >= arr[1] && y <= arr[3]) {
-                            clickIndex = i;
-                            break;
-                        }
-                        i++;
-                    }
-
-                    if (null != listener && clickIndex >= 0) {
-                        if (isLongClick)
-                            listener.setOnClickLongItemListener(clickIndex);
-                        else
-                            listener.setOnClickItemListener(clickIndex);
-                        postInvalidate();
-                    }
-                }
-                break;
-
-            case MotionEvent.ACTION_DOWN:
-                downY = event.getY();
-                paddingHasChanged = false;
-                touchDownTime = System.currentTimeMillis();
-                break;
-        }
-        return true;
     }
 
     public void removeItem(int index) {

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">CustomViews</string>
+    <string name="s_mon">Mon</string>
+    <string name="s_tues">Tues</string>
+    <string name="s_wed">Wed</string>
+    <string name="s_thu">Thu</string>
+    <string name="s_fri">Fri</string>
+    <string name="s_sat">Sat</string>
+    <string name="s_sun">Sun</string>
 </resources>

@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.litchiny.customviews.activity.FlowLayoutActivity">
+    tools:context="com.litchiny.customviews.activity.CircleRingActivity">
 
-    <com.litchiny.customviews.view.FlowLayout
-        android:id="@+id/fl_layout"
+    <com.litchiny.customviews.view.CircleRingView
+        android:id="@+id/crv_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:flow_text_normal_color="@color/colorPrimaryDark"
-        android:layout_margin="@dimen/dimen_size_15"
+        android:layout_margin="@dimen/dimen_size_30"
         />
 </android.support.constraint.ConstraintLayout>
