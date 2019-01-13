@@ -9,7 +9,7 @@
     <com.litchiny.customviews.view.FlowLayout
         android:id="@+id/fl_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:flow_text_normal_color="@color/colorPrimaryDark"
         android:layout_margin="@dimen/dimen_size_15"
         />

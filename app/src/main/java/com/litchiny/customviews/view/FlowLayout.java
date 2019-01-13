@@ -16,7 +16,9 @@ import android.view.View;
 import com.litchiny.customviews.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 一个流式布局view
@@ -32,17 +34,19 @@ public class FlowLayout extends View {
     private float textSize = 30;
     private int textPace = 35;                                //两个item的间隔
     private int textHeight = 40;
-    private int distanceW, distanceH;
+    private int distanceW = 1080;
     private List<int[]> pointList = new ArrayList<>();
     private int clickIndex = -1;
     private long touchDownTime;
     private boolean isLongClick;
     private int textNormalColor;
     private int textClickColor;
-    private boolean isShowEndAdd;
+    private boolean isShowEndAdd;                            //最后一个字符串是否是+
     private FlowClickListener listener;
-    private float downY;
     private boolean paddingHasChanged;
+    private int minHeight = 500;
+    private int baseItemHeight;
+    private int totalTextWidth;
 
     public FlowLayout(Context context) {
         this(context, null);
@@ -69,6 +73,7 @@ public class FlowLayout extends View {
         textHeight = rect.height();
         textPadding = textHeight;
         textPace = textHeight * 3 / 2;
+        baseItemHeight = textHeight + textPadding * 2 + textPace;
         mPaint.setAntiAlias(true);
     }
 
@@ -85,23 +90,62 @@ public class FlowLayout extends View {
         this.clickIndex = clickIndex;
         this.textList.clear();
         this.textList.addAll(textList);
+        resetMinHeight();
         postInvalidate();
+    }
+
+    //重设最小高度
+    private void resetMinHeight() {
+        int lastMinHeight = minHeight;
+        minHeight = minPadding;
+        int totalTextWidthC = 0;
+        for (int i = 0; i < textList.size(); i++) {
+            float width = mPaint.measureText(textList.get(i));
+            totalTextWidthC += (width + textPadding * 2 + textPace);
+            if (totalTextWidthC + textPace > distanceW) {  //判断width 是否够
+                totalTextWidthC = (int) (width + textPadding * 2 + textPace);
+                minHeight += baseItemHeight;
+            }
+            if (i == textList.size() - 1)
+                this.totalTextWidth = totalTextWidthC;
+        }
+        minHeight += textPadding * 2;
+        if (minHeight != lastMinHeight) {
+            requestLayout();
+        }
     }
 
     /**
      * @param addStr
-     * @param isAddEnd 新增加的字符串是否显示在末尾
      */
-    public void addData(String addStr, boolean isAddEnd) {
-        if (isAddEnd){
+    public void addData(String addStr) {
+        if (!isShowEndAdd) {    //新增加的字符串是否显示在末尾
             clickIndex = this.textList.size();
             this.textList.add(addStr);
+            //TODO  待补充requestLayout逻辑
         } else {
             int lastListSize = textList.size() - 1;
             clickIndex = lastListSize;
             String endStr = textList.get(lastListSize);
-            textList.set(lastListSize,addStr);
+            textList.set(lastListSize, addStr);
             textList.add(endStr);
+            float lastWidth = mPaint.measureText(endStr);
+            float addWidth = mPaint.measureText(addStr);
+            int lastMinHeight = minHeight;
+            int totalTextWidthC = (int) (totalTextWidth + (addWidth - lastWidth));
+            for (int i = 0; i < 2; i++) {
+                if (i > 0)
+                    totalTextWidthC += (lastWidth + textPadding * 2 + textPace);
+                if (totalTextWidthC + textPace > distanceW) {  //判断width 是否够
+                    totalTextWidthC = (int) ((i == 0 ? addWidth : lastWidth) + textPadding * 2 + textPace);
+                    minHeight += baseItemHeight;
+                }
+                if (i == 1)
+                    this.totalTextWidth = totalTextWidthC;
+            }
+            if (minHeight != lastMinHeight) {
+                requestLayout();
+            }
         }
         postInvalidate();
     }
@@ -149,7 +193,6 @@ public class FlowLayout extends View {
                 break;
 
             case MotionEvent.ACTION_DOWN:
-                downY = event.getY();
                 paddingHasChanged = false;
                 touchDownTime = System.currentTimeMillis();
                 break;
@@ -162,7 +205,7 @@ public class FlowLayout extends View {
         if (textList.size() <= 0)
             return;
         int startTextTop = minPadding;
-        int startTextLeft;
+        int startTextLeft = 0;
         int totalTextWidth = 0;
         pointList.clear();
         mPaint.setTextSize(textSize);
@@ -171,12 +214,12 @@ public class FlowLayout extends View {
             float width = mPaint.measureText(textList.get(i));
             int lastWidth = totalTextWidth;
             totalTextWidth += (width + textPadding * 2 + textPace);
-            if (totalTextWidth + textHeight * 2 > distanceW) {  //判断width 是否够
+            if (totalTextWidth + textPace > distanceW) {  //判断width 是否够
                 totalTextWidth = (int) (width + textPadding * 2 + textPace);
-                startTextLeft = textHeight * 2;
-                startTextTop += textHeight + textPadding * 2 + textPace;
+                startTextLeft = textPace;
+                startTextTop += baseItemHeight;
             } else {
-                startTextLeft = lastWidth + textHeight * 2;
+                startTextLeft = lastWidth + textPace;
             }
 
             mPaint.setColor(textNormalColor);
@@ -207,6 +250,12 @@ public class FlowLayout extends View {
     }
 
     @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        Log.d(TAG, "onLayout: ");
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -218,9 +267,9 @@ public class FlowLayout extends View {
         resultHeight += getPaddingTop() + getPaddingBottom();
         // 考虑父容器对尺寸的影响
         distanceW = resultWidth = resolveMeasure(sizeWidth, resultWidth);
-        distanceH = resultHeight = resolveMeasure(sizeHeight, resultHeight);
-        Log.d(TAG, "onMeasure: sizeHeight: " + sizeHeight + ",resultHeight: " + resultHeight);
-        setMeasuredDimension(resultWidth, resultHeight);
+        resultHeight = resolveMeasure(sizeHeight, resultHeight);
+        Log.d(TAG, "onMeasure: minHeight: " + minHeight + ",resultHeight: " + resultHeight);
+        setMeasuredDimension(resultWidth, minHeight);
     }
 
     /**
@@ -244,6 +293,7 @@ public class FlowLayout extends View {
     public void removeItem(int index) {
         textList.remove(index);
         clickIndex = -1;
+        resetMinHeight();
         postInvalidate();
     }
 

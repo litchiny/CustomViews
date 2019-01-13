@@ -44,7 +44,7 @@ class FlowLayoutActivity : AppCompatActivity() {
                     val addStr = testArray[(Math.random() * testArray.size - 1).toInt()]
                     datas[lastSize] = addStr
                     datas.add(endStr)
-                    fl_layout!!.addData(addStr, false)
+                    fl_layout!!.addData(addStr)
                 }
             }
 
