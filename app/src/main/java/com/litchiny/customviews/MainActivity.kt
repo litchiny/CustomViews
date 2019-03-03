@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import com.litchiny.customviews.activity.CircleRingActivity
-import com.litchiny.customviews.activity.CurveDetailChartActivity
-import com.litchiny.customviews.activity.FlowLayoutActivity
-import com.litchiny.customviews.activity.IconsActivity
+import com.litchiny.customviews.activity.*
 import com.litchiny.customviews.adapter.TextAdapter
 
 /**
@@ -22,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: TextAdapter
     private lateinit var context: Context;
-    private val array = arrayListOf<String>("FlowLayout", "CircleRing","CurveDetailChart","Icons")
+    private val array = arrayListOf<String>("FlowLayout", "CircleRing","CurveDetailChart","Icons","GamePropose")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context = this
@@ -44,6 +41,7 @@ class MainActivity : AppCompatActivity() {
                 1 -> startActivity(Intent(this@MainActivity, CircleRingActivity::class.java))
                 2 -> startActivity(Intent(this@MainActivity, CurveDetailChartActivity::class.java))
                 3 -> startActivity(Intent(this@MainActivity, IconsActivity::class.java))
+                4 -> startActivity(Intent(this@MainActivity, GameProposeActivity::class.java))
             }
         }
         rv_show.adapter = adapter

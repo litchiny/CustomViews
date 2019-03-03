@@ -21,5 +21,11 @@
     <color name="colorHeartRateMax">#8e0000</color>
     <color name="colorHeartRateMin">#ff0004</color>
     <color name="colorTextSelect">#106402</color>
-
+    <color name="colorLevel0">#dafad0</color>
+    <color name="colorLevel1">#c1f2b3</color>
+    <color name="colorLevel2">#95cc84</color>
+    <color name="colorLevel3">#7aae69</color>
+    <color name="colorLevel4">#5a9746</color>
+    <color name="colorLevel5">#476b3c</color>
+    <color name="colorLevel6">#3b5134</color>
 </resources>

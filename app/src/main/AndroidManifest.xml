@@ -19,7 +19,15 @@
         <activity android:name=".activity.FlowLayoutActivity" />
         <activity android:name=".activity.CircleRingActivity" />
         <activity android:name=".activity.CurveDetailChartActivity" />
-        <activity android:name=".activity.IconsActivity"></activity>
+        <activity android:name=".activity.IconsActivity" />
+        <activity
+            android:name=".activity.GameProposeActivity"
+            android:label="@string/title_activity_career">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
     </application>
 
 </manifest>

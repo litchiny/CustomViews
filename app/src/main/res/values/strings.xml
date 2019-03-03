@@ -7,4 +7,8 @@
     <string name="s_fri">Fri</string>
     <string name="s_sat">Sat</string>
     <string name="s_sun">Sun</string>
+    <string name="title_activity_career">CareerActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
