@@ -1,7 +1,5 @@
 package com.litchiny.customviews.model
 
-import android.graphics.Color
-
 
 /**
  * 所有model的集合
